@@ -1,0 +1,28 @@
+import requests
+
+# Substitua pelos valores reais
+TOKEN = "8139155308:AAEvx1a077ngaxPNpXfUUaBuRxWUPnO8Zr0"
+CHAT_ID = "-1002306200137" #select capkrypto
+MESSAGE_TEXT = "Bot de listagens vinculado!"
+
+def send_telegram_message(token, chat_id, message):
+    """
+    Envia a mensagem 'message' para o chat com 'chat_id' via bot Telegram de 'token'.
+    """
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": message
+    }
+    try:
+        response = requests.post(url, data=payload, timeout=10)
+        if response.status_code == 200:
+            print("Mensagem enviada com sucesso!")
+        else:
+            print(f"Falha ao enviar mensagem. Código HTTP: {response.status_code}")
+            print("Resposta:", response.text)
+    except Exception as e:
+        print(f"Erro ao enviar mensagem: {e}")
+
+if __name__ == "__main__":
+    send_telegram_message(TOKEN, CHAT_ID, MESSAGE_TEXT)
