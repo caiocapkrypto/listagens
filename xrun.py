@@ -40,7 +40,7 @@ def run_all_scripts():
             # deixe capture_output=False, ou omita esse parâmetro.
             # Se quiser capturar as saídas para tratamento, use capture_output=True.
             result = subprocess.run(
-                ["python", script_path],
+                ["python3", script_path],
                 capture_output=True,
                 text=True
             )
