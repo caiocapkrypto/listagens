@@ -78,7 +78,7 @@ def run_xrun():
     base_dir = os.path.dirname(os.path.abspath(__file__)) #pega a pasta deste arquivo
     xrun_path = os.path.join(base_dir, "xrun.py") #monta o caminho completo
     try:
-        subprocess.run(["python", xrun_path], check=True)
+        subprocess.run(["python3", xrun_path], check=True)
     except subprocess.CalledProcessError as e:
         print(f"[ERRO] Falha ao executar xrun.py: {e}")
         
