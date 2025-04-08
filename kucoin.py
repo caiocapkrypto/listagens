@@ -93,6 +93,11 @@ def main():
         # 2. Busca dados atuais de Spot na KuCoin
         new_data = fetch_kucoin_spot_tickers()
 
+        # 2.1. Remover especificamente "VRA-USDT" do dicionário, se houver:
+        if "VRA-USDT" in new_data:
+            new_data.pop("VRA-USDT")
+            print("Removido VRA-USDT do resultado atual.")
+
         # 3. Identifica símbolos novos (não presentes no arquivo anterior)
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_tickers_list = []
