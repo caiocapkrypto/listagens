@@ -3,7 +3,7 @@ import requests
 # Substitua pelos valores reais
 TOKEN = "8139155308:AAEvx1a077ngaxPNpXfUUaBuRxWUPnO8Zr0"
 CHAT_ID = "-1002306200137" #select capkrypto
-MESSAGE_TEXT = "Bot de listagens vinculado!"
+MESSAGE_TEXT = "Bot de listagens atualizado e disponível novamente!!"
 
 def send_telegram_message(token, chat_id, message):
     """
