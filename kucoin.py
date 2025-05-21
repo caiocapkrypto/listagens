@@ -6,7 +6,7 @@ from datetime import datetime
 def fetch_kucoin_spot_tickers():
     """
     Faz uma requisição ao endpoint 'GET /api/v1/market/allTickers' para obter
-    todos os tickers de Spot da KuCoin.
+    todos os tickers de Spot da KuCoin, ignorando preços ausentes (None).
     
     Retorna um dicionário no formato:
         { "KCS-BTC": 0.00012, "ETH-BTC": 0.077, ... }
@@ -20,18 +20,21 @@ def fetch_kucoin_spot_tickers():
         raise Exception(f"Erro ao buscar dados da KuCoin: {data.get('msg', data)}")
     
     tickers_dict = {}
-    # Em data["data"]["ticker"] vem uma lista de dicionários
     ticker_list = data.get("data", {}).get("ticker", [])
     
     for item in ticker_list:
-        symbol = item["symbol"]        # Ex: "KCS-BTC"
-        last_price_str = item["last"]  # Ex: "0.00012"
+        symbol = item.get("symbol")       # Ex: "KCS-BTC"
+        last_price_str = item.get("last") # Ex: "0.00012" ou None
+        
+        # Ignora entradas sem preço
+        if last_price_str is None or last_price_str == "":
+            continue
         
         try:
-            last_price = float(last_price_str)
-            tickers_dict[symbol] = last_price
-        except ValueError:
-            pass
+            tickers_dict[symbol] = float(last_price_str)
+        except (ValueError, TypeError):
+            # pula qualquer valor não convertível
+            continue
     
     return tickers_dict
 
@@ -43,9 +46,12 @@ def get_latest_kucoin_spot_file():
     files = [f for f in os.listdir('.') if f.startswith("kucoin_spot_") and f.endswith(".json")]
     if not files:
         return None
-    # Ordena do mais antigo ao mais recente
-    files_sorted = sorted(files, key=lambda x: x.replace("kucoin_spot_", "").replace(".json", ""))
-    return files_sorted[-1]  # o último é o mais recente
+    # Ordena do mais antigo ao mais recente com base no timestamp do nome
+    files_sorted = sorted(
+        files,
+        key=lambda x: x.replace("kucoin_spot_", "").replace(".json", "")
+    )
+    return files_sorted[-1]
 
 def load_json_file(filepath):
     """
@@ -79,7 +85,10 @@ def remove_oldest_if_exceeds(limit=2):
     """
     files = [f for f in os.listdir('.') if f.startswith("kucoin_spot_") and f.endswith(".json")]
     if len(files) > limit:
-        files_sorted = sorted(files, key=lambda x: x.replace("kucoin_spot_", "").replace(".json", ""))
+        files_sorted = sorted(
+            files,
+            key=lambda x: x.replace("kucoin_spot_", "").replace(".json", "")
+        )
         oldest = files_sorted[0]
         os.remove(oldest)
         print(f"Excluído o arquivo mais antigo: {oldest}")
@@ -93,7 +102,7 @@ def main():
         # 2. Busca dados atuais de Spot na KuCoin
         new_data = fetch_kucoin_spot_tickers()
 
-        # 2.1. Remover especificamente "VRA-USDT" do dicionário, se houver:
+        # 2.1. Remover especificamente "VRA-USDT" do dicionário, se houver
         if "VRA-USDT" in new_data:
             new_data.pop("VRA-USDT")
             print("Removido VRA-USDT do resultado atual.")
