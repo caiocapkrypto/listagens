@@ -13,7 +13,9 @@ UPDATE_SCRIPTS = [
     "htx.py",
     "kucoin.py",
     "mexc.py",
-    "mexcf.py"
+    "mexcf.py",
+    "gateiof.py",
+    "htxf.py"
 ]
 
 def run_all_scripts():
