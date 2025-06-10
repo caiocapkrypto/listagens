@@ -68,7 +68,18 @@ CORRETORAS = [
         "script": "mexcf.py",
         "nome": "MEXC (Futures)",
         "novo_file": "novo_mexc_futures.json"
+    },
+    {
+        "script": "gateiof.py",
+        "nome": "Gate (Futures)",
+        "novo_file": "novo_gateio_futures.json"
+    },
+    {
+        "script": "htxf.py",
+        "nome": "HTX (Futures)",
+        "novo_file": "novo_htx_futures.json"
     }
+
 ]
 
 def run_xrun():
