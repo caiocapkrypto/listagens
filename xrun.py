@@ -11,7 +11,6 @@ UPDATE_SCRIPTS = [
     "bybitf.py",
     "coinex.py",
     "htx.py",
-    "kucoin.py",
     "mexc.py",
     "mexcf.py",
     "gateiof.py",
