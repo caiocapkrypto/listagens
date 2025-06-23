@@ -190,9 +190,9 @@ def main():
             # 2) Verifica arquivos de novos tickers e envia mensagens
             check_and_send_new_tickers()
 
-            # 3) Aguarda 15 minutos (900 segundos) e repete
+            # 3) Aguarda 2 minutos e 30 (150 segundos) e repete
             print("Aguardando 5 minutos para a próxima execução...\n")
-            time.sleep(300)  # 15 * 60
+            time.sleep(150)  
 
     except KeyboardInterrupt:
         print("Execução interrompida pelo usuário.")
